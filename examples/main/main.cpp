@@ -256,11 +256,15 @@ int main(int argc, char ** argv) {
     }
 
     // prefix & suffix for instruct mode
-    const auto inp_pfx = ::llama_tokenize(ctx, "\n\n### Instruction:\n\n", true);
-    const auto inp_sfx = ::llama_tokenize(ctx, "\n\n### Response:\n\n", false);
+    //const auto inp_pfx = ::llama_tokenize(ctx, "\n\n### Instruction:\n\n", true);
+    //const auto inp_sfx = ::llama_tokenize(ctx, "\n\n### Response:\n\n", false);
+    std::vector<llama_token> inp_pfx;
+    std::vector<llama_token> inp_sfx;
 
     // in instruct mode, we inject a prefix and a suffix to each input by the user
     if (params.instruct) {
+        inp_pfx = ::llama_tokenize(ctx, "\n\n### Instruction:\n\n", true);
+        inp_sfx = ::llama_tokenize(ctx, "\n\n### Response:\n\n", false);
         params.interactive_first = true;
         params.antiprompt.push_back("### Instruction:\n\n");
     }
@@ -271,7 +275,7 @@ int main(int argc, char ** argv) {
     }
 
     // determine newline token
-    auto llama_token_newline = ::llama_tokenize(ctx, "\n", false);
+    //auto llama_token_newline = ::llama_tokenize(ctx, "\n", false);
 
     if (params.verbose_prompt) {
         fprintf(stderr, "\n");
